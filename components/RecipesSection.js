@@ -37,18 +37,15 @@ export default function RecipesSection({ dict, recipes, onAdd, onRemove }) {
 
   return (
     <section>
-      <h2 className="text-lg font-semibold mt-6 mb-3">{dict.recipes.heading}</h2>
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 mb-5"
-      >
+      <h2 className="font-serif text-2xl md:text-3xl tracking-tight mb-6">{dict.recipes.heading}</h2>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white border border-neutral-200 p-6 mb-8">
         <input
           type="text"
           value={name}
           onChange={e => setName(e.target.value)}
           placeholder={dict.recipes.namePlaceholder}
           required
-          className="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
+          className="px-4 py-2.5 border border-neutral-300 bg-white focus:outline-none focus:border-accent"
         />
 
         <div className="flex flex-col gap-2">
@@ -60,19 +57,19 @@ export default function RecipesSection({ dict, recipes, onAdd, onRemove }) {
                 onChange={e => updateRow(i, 'name', e.target.value)}
                 placeholder={dict.recipes.ingredientPlaceholder}
                 required
-                className="flex-1 min-w-0 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
+                className="flex-1 min-w-0 px-4 py-2.5 border border-neutral-300 bg-white focus:outline-none focus:border-accent"
               />
               <input
                 type="text"
                 value={row.qty}
                 onChange={e => updateRow(i, 'qty', e.target.value)}
                 placeholder={dict.recipes.ingredientQtyPlaceholder}
-                className="flex-1 min-w-0 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
+                className="flex-1 min-w-0 px-4 py-2.5 border border-neutral-300 bg-white focus:outline-none focus:border-accent"
               />
               <button
                 type="button"
                 onClick={() => removeRow(i)}
-                className="text-red-600 bg-transparent hover:opacity-70 px-2"
+                className="text-neutral-400 bg-transparent hover:text-neutral-900 px-2 transition-colors"
               >
                 ✕
               </button>
@@ -83,39 +80,39 @@ export default function RecipesSection({ dict, recipes, onAdd, onRemove }) {
         <button
           type="button"
           onClick={addRow}
-          className="self-start px-3 py-2 rounded-lg border border-dashed border-gray-300 dark:border-gray-600 text-blue-600 dark:text-blue-400 bg-transparent"
+          className="self-start px-4 py-2 border border-dashed border-neutral-300 uppercase text-xs tracking-widest text-accent hover:border-accent transition-colors"
         >
           {dict.recipes.addIngredient}
         </button>
 
-        <button type="submit" className="self-start px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white">
+        <button
+          type="submit"
+          className="self-start rounded-full bg-black text-white uppercase text-xs tracking-widest font-bold px-8 py-2.5 hover:bg-accent transition-colors"
+        >
           {dict.recipes.save}
         </button>
       </form>
 
       {recipes.length === 0 ? (
-        <p className="text-gray-500 italic text-sm">{dict.recipes.empty}</p>
+        <p className="text-neutral-400 italic text-sm">{dict.recipes.empty}</p>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           {recipes.map(recipe => (
-            <div
-              key={recipe.id}
-              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4"
-            >
-              <h3 className="flex justify-between items-center font-semibold mb-1">
+            <div key={recipe.id} className="bg-white border border-neutral-200 p-6">
+              <h3 className="flex justify-between items-center font-serif text-xl mb-2">
                 <span>
-                  <span className="text-gray-500 font-normal text-sm mr-1">#{recipe.num}</span>
+                  <span className="text-neutral-400 font-sans font-normal text-sm mr-2">#{recipe.num}</span>
                   {recipe.name}
                 </span>
                 <button
                   onClick={() => onRemove(recipe.id)}
-                  className="text-red-600 bg-transparent hover:opacity-70 px-2"
+                  className="text-neutral-400 bg-transparent hover:text-neutral-900 px-2 transition-colors"
                   title={dict.recipes.delete}
                 >
                   ✕
                 </button>
               </h3>
-              <ul className="list-disc pl-5 text-sm">
+              <ul className="list-disc pl-5 text-sm text-neutral-600">
                 {recipe.ingredients.map((ing, i) => (
                   <li key={i}>
                     {ing.name}

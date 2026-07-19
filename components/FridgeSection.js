@@ -16,44 +16,47 @@ export default function FridgeSection({ dict, fridge, onAdd, onRemove }) {
 
   return (
     <section>
-      <h2 className="text-lg font-semibold mt-6 mb-3">{dict.fridge.heading}</h2>
-      <form onSubmit={handleSubmit} className="flex gap-2 flex-wrap mb-4">
+      <h2 className="font-serif text-2xl md:text-3xl tracking-tight mb-6">{dict.fridge.heading}</h2>
+      <form onSubmit={handleSubmit} className="flex gap-3 flex-wrap mb-8">
         <input
           type="text"
           value={name}
           onChange={e => setName(e.target.value)}
           placeholder={dict.fridge.namePlaceholder}
           required
-          className="flex-1 min-w-[120px] px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
+          className="flex-1 min-w-[140px] px-4 py-2.5 border border-neutral-300 bg-white focus:outline-none focus:border-accent"
         />
         <input
           type="text"
           value={qty}
           onChange={e => setQty(e.target.value)}
           placeholder={dict.fridge.qtyPlaceholder}
-          className="flex-1 min-w-[120px] px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
+          className="flex-1 min-w-[140px] px-4 py-2.5 border border-neutral-300 bg-white focus:outline-none focus:border-accent"
         />
-        <button type="submit" className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white">
+        <button
+          type="submit"
+          className="rounded-full bg-black text-white uppercase text-xs tracking-widest font-bold px-8 py-2.5 hover:bg-accent transition-colors"
+        >
           {dict.fridge.add}
         </button>
       </form>
 
       {fridge.length === 0 ? (
-        <p className="text-gray-500 italic text-sm">{dict.fridge.empty}</p>
+        <p className="text-neutral-400 italic text-sm">{dict.fridge.empty}</p>
       ) : (
         <ul className="flex flex-col gap-2">
           {fridge.map(item => (
             <li
               key={item.id}
-              className="flex justify-between items-center bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2"
+              className="flex justify-between items-center bg-white border border-neutral-200 px-5 py-3"
             >
               <span>
                 {item.name}
-                {item.qty && <span className="text-gray-500 text-sm ml-2">{item.qty}</span>}
+                {item.qty && <span className="text-neutral-400 text-sm ml-2">{item.qty}</span>}
               </span>
               <button
                 onClick={() => onRemove(item.id)}
-                className="text-red-600 bg-transparent hover:opacity-70 px-2"
+                className="text-neutral-400 bg-transparent hover:text-neutral-900 px-2 transition-colors"
                 title={dict.fridge.delete}
               >
                 ✕

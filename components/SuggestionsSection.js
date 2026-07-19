@@ -1,4 +1,5 @@
 import { normalize } from '@/lib/utils';
+import OrnamentDivider from './OrnamentDivider';
 
 function missingIngredients(recipe, fridgeSet) {
   return recipe.ingredients.filter(ing => !fridgeSet.has(normalize(ing.name)));
@@ -17,24 +18,26 @@ export default function SuggestionsSection({ dict, fridge, recipes }) {
 
   return (
     <section>
-      <h2 className="text-lg font-semibold mt-6 mb-3">{dict.suggestions.canMakeHeading}</h2>
+      <h2 className="font-serif text-2xl md:text-3xl tracking-tight mb-6">{dict.suggestions.canMakeHeading}</h2>
       {canMake.length === 0 ? (
-        <p className="text-gray-500 italic text-sm">{dict.suggestions.canMakeEmpty}</p>
+        <p className="text-neutral-400 italic text-sm">{dict.suggestions.canMakeEmpty}</p>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           {canMake.map(({ recipe }) => (
-            <RecipeCard key={recipe.id} dict={dict} recipe={recipe} missing={[]} tone="can-make" />
+            <RecipeCard key={recipe.id} dict={dict} recipe={recipe} missing={[]} tag={dict.suggestions.canMakeTag} tagAccent />
           ))}
         </div>
       )}
 
-      <h2 className="text-lg font-semibold mt-6 mb-3">{dict.suggestions.almostHeading}</h2>
+      <OrnamentDivider />
+
+      <h2 className="font-serif text-2xl md:text-3xl tracking-tight mb-6">{dict.suggestions.almostHeading}</h2>
       {almost.length === 0 ? (
-        <p className="text-gray-500 italic text-sm">{dict.suggestions.almostEmpty}</p>
+        <p className="text-neutral-400 italic text-sm">{dict.suggestions.almostEmpty}</p>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           {almost.map(({ recipe, missing }) => (
-            <RecipeCard key={recipe.id} dict={dict} recipe={recipe} missing={missing} tone="almost" />
+            <RecipeCard key={recipe.id} dict={dict} recipe={recipe} missing={missing} tag={dict.suggestions.almostTag} />
           ))}
         </div>
       )}
@@ -42,24 +45,29 @@ export default function SuggestionsSection({ dict, fridge, recipes }) {
   );
 }
 
-function RecipeCard({ dict, recipe, missing, tone }) {
+function RecipeCard({ dict, recipe, missing, tag, tagAccent }) {
   const missingNames = new Set(missing.map(m => normalize(m.name)));
-  const toneClasses =
-    tone === 'can-make'
-      ? 'bg-emerald-50 dark:bg-emerald-950 border-emerald-200 dark:border-emerald-800'
-      : 'bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800';
 
   return (
-    <div className={`border rounded-xl p-4 ${toneClasses}`}>
-      <h3 className="font-semibold mb-1">
-        <span className="text-gray-500 font-normal text-sm mr-1">#{recipe.num}</span>
-        {recipe.name}
-      </h3>
-      <ul className="list-disc pl-5 text-sm">
+    <div className="border border-neutral-200 bg-white p-6">
+      <div className="flex justify-between items-start mb-2">
+        <h3 className="font-serif text-xl">
+          <span className="text-neutral-400 font-sans font-normal text-sm mr-2">#{recipe.num}</span>
+          {recipe.name}
+        </h3>
+        <span
+          className={`uppercase text-[0.65rem] tracking-widest font-bold px-3 py-1 rounded-full border ${
+            tagAccent ? 'text-accent border-accent' : 'text-neutral-400 border-neutral-300'
+          }`}
+        >
+          {tag}
+        </span>
+      </div>
+      <ul className="list-disc pl-5 text-sm text-neutral-600">
         {recipe.ingredients.map((ing, i) => {
           const isMissing = missingNames.has(normalize(ing.name));
           return (
-            <li key={i} className={isMissing ? 'text-red-600 dark:text-red-400' : ''}>
+            <li key={i} className={isMissing ? 'text-neutral-400 italic' : ''}>
               {ing.name}
               {ing.qty && ` (${ing.qty})`}
               {isMissing && ` — ${dict.suggestions.missing}`}

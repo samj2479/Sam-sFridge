@@ -1,4 +1,23 @@
+import { Playfair_Display, Lato, Noto_Sans_KR } from 'next/font/google';
 import './globals.css';
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['700', '900'],
+  variable: '--font-playfair',
+});
+
+const lato = Lato({
+  subsets: ['latin'],
+  weight: ['300', '400', '700'],
+  variable: '--font-lato',
+});
+
+const notoKR = Noto_Sans_KR({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-noto-kr',
+});
 
 export const metadata = {
   title: "Sam's Fridge",
@@ -7,10 +26,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="ko">
-      <body className="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen">
-        {children}
-      </body>
+    <html lang="ko" className={`${playfair.variable} ${lato.variable} ${notoKR.variable}`}>
+      <body className="bg-cream text-neutral-900 font-sans antialiased">{children}</body>
     </html>
   );
 }
