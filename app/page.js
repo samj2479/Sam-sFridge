@@ -1,6 +1,6 @@
-import FridgeApp from '@/components/FridgeApp';
+import PageShell from '@/components/PageShell';
 import { dictionaries } from '@/lib/dictionaries';
 
-export default function KoreanHome() {
-  return <FridgeApp dict={dictionaries.ko} />;
+export default function KoreanFridgePage() {
+  return <PageShell dict={dictionaries.ko} page="fridge" />;
 }

@@ -1,55 +1,37 @@
-'use client';
+import Link from 'next/link';
 
-import { useEffect, useState } from 'react';
+const TABS = ['fridge', 'recipes'];
 
-const TABS = ['suggestions', 'fridge', 'recipes'];
+function hrefFor(tab, lang) {
+  if (tab === 'fridge') return lang === 'ko' ? '/' : '/en';
+  return lang === 'ko' ? '/recipes' : '/en/recipes';
+}
 
-export default function Nav({ dict, activeTab, onTabClick }) {
-  const [solid, setSolid] = useState(false);
-
-  useEffect(() => {
-    function onScroll() {
-      setSolid(window.scrollY > window.innerHeight * 0.7);
-    }
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  const textColor = solid ? 'text-neutral-900' : 'text-white';
-
+export default function Nav({ dict, activePage }) {
   return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 transition-colors duration-300 ${
-        solid ? 'bg-cream/95 backdrop-blur shadow-sm' : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className={`font-serif font-bold text-lg tracking-tight ${textColor}`}
-        >
+    <header className="fixed top-0 inset-x-0 z-50 bg-cream/95 backdrop-blur shadow-sm">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Link href={hrefFor('fridge', dict.lang)} className="font-serif font-bold text-lg tracking-tight text-neutral-900">
           {dict.title}
-        </button>
+        </Link>
 
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="flex items-center gap-4 sm:gap-8">
           {TABS.map(tab => (
-            <button
+            <Link
               key={tab}
-              onClick={() => onTabClick(tab)}
-              className={`font-serif text-sm uppercase tracking-wide transition-colors ${textColor} ${
-                activeTab === tab ? 'text-accent' : 'hover:text-accent'
+              href={hrefFor(tab, dict.lang)}
+              className={`font-serif text-sm uppercase tracking-wide transition-colors text-neutral-900 ${
+                activePage === tab ? 'text-accent' : 'hover:text-accent'
               }`}
             >
               {dict.tabs[tab]}
-            </button>
+            </Link>
           ))}
         </nav>
 
         <a
           href={dict.langSwitchHref}
-          className={`rounded-full border px-4 py-1.5 text-xs uppercase tracking-widest font-sans transition-colors ${textColor} ${
-            solid ? 'border-neutral-300 hover:border-accent' : 'border-white/30 hover:border-accent'
-          } hover:text-accent`}
+          className="rounded-full border px-4 py-1.5 text-xs uppercase tracking-widest font-sans transition-colors text-neutral-900 border-neutral-300 hover:border-accent hover:text-accent"
         >
           {dict.langSwitchLabel}
         </a>

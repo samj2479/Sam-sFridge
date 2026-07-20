@@ -1,6 +1,13 @@
-const TABS = ['suggestions', 'fridge', 'recipes'];
+import Link from 'next/link';
 
-export default function Footer({ dict, onTabClick }) {
+const TABS = ['fridge', 'recipes'];
+
+function hrefFor(tab, lang) {
+  if (tab === 'fridge') return lang === 'ko' ? '/' : '/en';
+  return lang === 'ko' ? '/recipes' : '/en/recipes';
+}
+
+export default function Footer({ dict }) {
   return (
     <footer id="footer" className="w-full bg-ink text-white px-6 md:px-16 py-20">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto w-full">
@@ -14,12 +21,12 @@ export default function Footer({ dict, onTabClick }) {
           <ul className="space-y-2">
             {TABS.map(tab => (
               <li key={tab}>
-                <button
-                  onClick={() => onTabClick(tab)}
+                <Link
+                  href={hrefFor(tab, dict.lang)}
                   className="font-serif text-lg text-white/70 hover:text-accent transition-colors"
                 >
                   {dict.tabs[tab]}
-                </button>
+                </Link>
               </li>
             ))}
           </ul>
